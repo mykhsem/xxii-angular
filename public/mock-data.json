@@ -1,0 +1,351 @@
+{
+  "authors": [
+    {
+      "id": "a1",
+      "nick": "alice",
+      "name": "Alice Morgan",
+      "bio": "Full-stack developer, open-source enthusiast",
+      "icon": "A",
+      "status": "online",
+      "created": "2025-01-10T08:00:00Z",
+      "updated": "2025-02-20T14:30:00Z",
+      "settings": { "theme": "dark", "locale": "en" },
+      "nodes": ["n1"]
+    },
+    {
+      "id": "a2",
+      "nick": "bob",
+      "name": "Bob Chen",
+      "bio": "DevOps engineer, coffee addict",
+      "icon": "B",
+      "status": "away",
+      "created": "2025-01-12T10:00:00Z",
+      "updated": "2025-02-19T09:15:00Z",
+      "settings": { "theme": "dark", "locale": "en" },
+      "nodes": ["n1", "n2"]
+    },
+    {
+      "id": "a3",
+      "nick": "charlie",
+      "name": "Charlie Rivera",
+      "bio": "UI/UX designer with a passion for terminal aesthetics",
+      "icon": "C",
+      "status": "dnd",
+      "created": "2025-01-15T12:00:00Z",
+      "updated": "2025-02-20T18:00:00Z",
+      "settings": { "theme": "dark", "locale": "es" },
+      "nodes": ["n2"]
+    },
+    {
+      "id": "a4",
+      "nick": "diana",
+      "name": "Diana Kovacs",
+      "bio": "Backend architect, distributed systems",
+      "icon": "D",
+      "status": "offline",
+      "created": "2025-01-20T09:00:00Z",
+      "updated": "2025-02-18T11:45:00Z",
+      "settings": { "theme": "light", "locale": "en" },
+      "nodes": ["n1"]
+    }
+  ],
+
+  "nodes": [
+    {
+      "id": "n1",
+      "name": "eu-central",
+      "domain": "eu.xxii.chat",
+      "ip": "185.120.10.1",
+      "ports": [443, 8443]
+    },
+    {
+      "id": "n2",
+      "name": "us-east",
+      "domain": "us.xxii.chat",
+      "ip": "204.48.22.5",
+      "ports": [443, 8443, 9000]
+    }
+  ],
+
+  "peers": [
+    {
+      "id": "p1",
+      "name": "bob-laptop",
+      "owner": "a2",
+      "lastSeen": "2025-02-20T16:00:00Z",
+      "ip": "192.168.1.42"
+    },
+    {
+      "id": "p2",
+      "name": "diana-workstation",
+      "owner": "a4",
+      "lastSeen": "2025-02-18T11:30:00Z",
+      "ip": "10.0.0.15"
+    }
+  ],
+
+  "folders": [
+    {
+      "id": "fld1",
+      "name": "Shared Files",
+      "owner": "a1",
+      "icon": "folder",
+      "description": "Root shared folder for the team",
+      "visibility": "public"
+    },
+    {
+      "id": "fld2",
+      "name": "Documents",
+      "owner": "a1",
+      "parent": "fld1",
+      "description": "Project documentation",
+      "visibility": "public"
+    },
+    {
+      "id": "fld3",
+      "name": "Media",
+      "owner": "a3",
+      "parent": "fld1",
+      "description": "Screenshots and design assets",
+      "visibility": "unlisted"
+    }
+  ],
+
+  "files": [
+    {
+      "id": "f1",
+      "name": "README.md",
+      "owner": "a1",
+      "folder": "fld2",
+      "mime": "text/markdown",
+      "size": 4096,
+      "checksum": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "created": "2025-01-20T10:00:00Z",
+      "modified": "2025-02-15T08:30:00Z",
+      "visibility": "public"
+    },
+    {
+      "id": "f2",
+      "name": "architecture.pdf",
+      "owner": "a4",
+      "folder": "fld2",
+      "mime": "application/pdf",
+      "size": 1048576,
+      "checksum": "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2",
+      "created": "2025-02-01T14:00:00Z",
+      "modified": "2025-02-10T16:20:00Z",
+      "visibility": "public"
+    },
+    {
+      "id": "f3",
+      "name": "mockup-v2.png",
+      "owner": "a3",
+      "folder": "fld3",
+      "mime": "image/png",
+      "size": 524288,
+      "checksum": "deadbeefcafebabe1234567890abcdef1234567890abcdef1234567890abcdef",
+      "created": "2025-02-18T11:00:00Z",
+      "modified": "2025-02-18T11:00:00Z",
+      "visibility": "unlisted"
+    }
+  ],
+
+  "chats": [
+    {
+      "id": "ch1",
+      "name": "general",
+      "owner": "a1",
+      "icon": "#",
+      "description": "General discussion for the team",
+      "created": "2025-01-10T08:00:00Z",
+      "lastActivity": "2025-02-20T19:45:00Z",
+      "members": ["a1", "a2", "a3", "a4"],
+      "admins": ["a1"],
+      "moderators": ["a2"],
+      "mute": [],
+      "ban": [],
+      "pinned": ["m2"]
+    },
+    {
+      "id": "ch2",
+      "name": "dev-backend",
+      "owner": "a4",
+      "icon": "$",
+      "description": "Backend architecture and API discussion",
+      "created": "2025-01-15T12:00:00Z",
+      "lastActivity": "2025-02-20T17:30:00Z",
+      "members": ["a1", "a2", "a4"],
+      "admins": ["a4"],
+      "moderators": [],
+      "mute": [],
+      "ban": [],
+      "pinned": []
+    }
+  ],
+
+  "messages": [
+    {
+      "id": "m1",
+      "chat": "ch1",
+      "author": "a1",
+      "content": "Hey everyone, welcome to the general channel!",
+      "created": "2025-01-10T08:05:00Z",
+      "reactions": { "wave": ["a2", "a3", "a4"] },
+      "pinned": false,
+      "attachments": []
+    },
+    {
+      "id": "m2",
+      "chat": "ch1",
+      "author": "a2",
+      "content": "Reminder: standup is at 10:00 UTC every day. Please be on time.",
+      "created": "2025-01-11T09:00:00Z",
+      "reactions": { "thumbsup": ["a1", "a3"] },
+      "pinned": true,
+      "attachments": []
+    },
+    {
+      "id": "m3",
+      "chat": "ch1",
+      "author": "a3",
+      "content": "I've uploaded the new mockups to the Media folder, take a look when you can",
+      "created": "2025-02-18T11:05:00Z",
+      "reactions": { "eyes": ["a1"] },
+      "pinned": false,
+      "attachments": ["f3"]
+    },
+    {
+      "id": "m4",
+      "chat": "ch1",
+      "author": "a1",
+      "content": "Looks great @charlie! Love the terminal aesthetic",
+      "created": "2025-02-18T11:20:00Z",
+      "replyTo": "m3",
+      "reactions": { "heart": ["a3"] },
+      "pinned": false,
+      "attachments": []
+    },
+    {
+      "id": "m5",
+      "chat": "ch1",
+      "author": "a4",
+      "content": "Quick heads up: API v2 endpoints are live on staging",
+      "created": "2025-02-20T19:45:00Z",
+      "reactions": { "rocket": ["a1", "a2"] },
+      "pinned": false,
+      "attachments": []
+    },
+    {
+      "id": "m6",
+      "chat": "ch2",
+      "author": "a4",
+      "content": "I've finished the schema refactor. All entities now use consistent ID formats.",
+      "created": "2025-02-19T14:00:00Z",
+      "reactions": {},
+      "pinned": false,
+      "attachments": ["f2"]
+    },
+    {
+      "id": "m7",
+      "chat": "ch2",
+      "author": "a2",
+      "content": "Nice. I'll update the CI pipeline to run the new integration tests.",
+      "created": "2025-02-19T14:15:00Z",
+      "replyTo": "m6",
+      "reactions": { "thumbsup": ["a4"] },
+      "pinned": false,
+      "attachments": []
+    },
+    {
+      "id": "m8",
+      "chat": "ch2",
+      "author": "a1",
+      "content": "Should we add rate limiting on the message endpoints? Getting some spikes in staging.",
+      "created": "2025-02-20T17:30:00Z",
+      "reactions": { "thinking": ["a4"] },
+      "pinned": false,
+      "attachments": []
+    }
+  ],
+
+  "feeds": [
+    {
+      "id": "fd1",
+      "name": "Announcements",
+      "owner": "a1",
+      "icon": "!",
+      "description": "Official team announcements and updates",
+      "created": "2025-01-10T08:00:00Z",
+      "visibility": "public",
+      "joinPolicy": "open",
+      "pinned": ["ps1"]
+    },
+    {
+      "id": "fd2",
+      "name": "Tech Blog",
+      "owner": "a4",
+      "icon": "T",
+      "description": "Engineering deep-dives and technical write-ups",
+      "created": "2025-01-20T10:00:00Z",
+      "visibility": "public",
+      "joinPolicy": "open",
+      "pinned": []
+    }
+  ],
+
+  "posts": [
+    {
+      "id": "ps1",
+      "title": "Welcome to XXII Chat",
+      "subtitle": "A new way to communicate",
+      "content": "We're excited to launch XXII Chat — a modern, terminal-inspired communication platform built for developers. Explore chats, feeds, and file sharing all in one place.",
+      "feed": "fd1",
+      "author": "a1",
+      "created": "2025-01-10T08:10:00Z",
+      "published": "2025-01-10T08:10:00Z",
+      "status": "published",
+      "reactions": { "rocket": ["a2", "a3", "a4"], "heart": ["a3"] },
+      "pinned": true,
+      "attachments": []
+    },
+    {
+      "id": "ps2",
+      "title": "v0.2.0 Release Notes",
+      "content": "This release includes feed support, file attachments, and improved message threading. See the full changelog in the Documents folder.",
+      "feed": "fd1",
+      "author": "a1",
+      "created": "2025-02-15T10:00:00Z",
+      "published": "2025-02-15T10:00:00Z",
+      "status": "published",
+      "reactions": { "tada": ["a2", "a4"] },
+      "pinned": false,
+      "attachments": ["f1"]
+    },
+    {
+      "id": "ps3",
+      "title": "Designing the Schema Layer",
+      "subtitle": "How metaschema powers our domain model",
+      "content": "In this post we explore how xxii-schema uses Metarhia's metaschema format to define a shared contract between frontend and backend. The schema-first approach ensures type safety across the entire stack while keeping the domain model in a single source of truth.",
+      "feed": "fd2",
+      "author": "a4",
+      "created": "2025-02-10T14:00:00Z",
+      "published": "2025-02-10T14:00:00Z",
+      "status": "published",
+      "reactions": { "fire": ["a1", "a2"], "brain": ["a3"] },
+      "pinned": false,
+      "attachments": ["f2"]
+    },
+    {
+      "id": "ps4",
+      "title": "Terminal UI Patterns in Angular",
+      "content": "Draft exploring how to bring retro-terminal aesthetics to a modern Angular app using Tailwind CSS and monospace typography.",
+      "feed": "fd2",
+      "author": "a3",
+      "created": "2025-02-20T16:00:00Z",
+      "status": "draft",
+      "reactions": {},
+      "pinned": false,
+      "attachments": ["f3"]
+    }
+  ]
+}
