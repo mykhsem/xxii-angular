@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, shareReplay, map, retry, catchError, of } from 'rxjs';
+import { catchError, map, Observable, of, retry, shareReplay } from 'rxjs';
 
 import type { Author } from '../models/author';
 import type { Chat } from '../models/chat';
@@ -27,22 +27,18 @@ interface MockData {
 
 @Injectable()
 export class MockApiService extends ApiService {
-  private readonly data$: Observable<MockData>;
-
-  constructor(private readonly http: HttpClient) {
-    super();
-    this.data$ = this.http.get<MockData>('/mock-data.json').pipe(
-      retry({ count: 2, delay: 500 }),
-      catchError((err) => {
-        console.error('MockApiService: failed to load mock-data.json', err);
-        return of<MockData>({
-          authors: [], chats: [], feeds: [], files: [],
-          folders: [], messages: [], nodes: [], peers: [], posts: [],
-        });
-      }),
-      shareReplay(1),
-    );
-  }
+  private readonly http = inject(HttpClient);
+  private readonly data$: Observable<MockData> = this.http.get<MockData>('/mock-data.json').pipe(
+    retry({ count: 2, delay: 500 }),
+    catchError((err) => {
+      console.error('MockApiService: failed to load mock-data.json', err);
+      return of<MockData>({
+        authors: [], chats: [], feeds: [], files: [],
+        folders: [], messages: [], nodes: [], peers: [], posts: [],
+      });
+    }),
+    shareReplay(1),
+  );
 
   getAuthors(): Observable<Author[]> {
     return this.data$.pipe(map((d) => d.authors));
