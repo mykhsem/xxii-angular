@@ -12,5 +12,5 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(),
     { provide: ApiService, useClass: MockApiService },
-  ]
+  ],
 };

@@ -33,8 +33,15 @@ export class MockApiService extends ApiService {
     catchError((err) => {
       console.error('MockApiService: failed to load mock-data.json', err);
       return of<MockData>({
-        authors: [], chats: [], feeds: [], files: [],
-        folders: [], messages: [], nodes: [], peers: [], posts: [],
+        authors: [],
+        chats: [],
+        feeds: [],
+        files: [],
+        folders: [],
+        messages: [],
+        nodes: [],
+        peers: [],
+        posts: [],
       });
     }),
     shareReplay(1),

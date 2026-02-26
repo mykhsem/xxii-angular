@@ -1,4 +1,4 @@
-import { Message } from "./message";
+import { Message } from './message';
 
 export type FeedVisibility = 'public' | 'private' | 'unlisted';
 export type FeedJoinPolicy = 'open' | 'invite' | 'request';
