@@ -11,7 +11,7 @@ flowchart TB
     subgraph BrowserTab ["Browser Tab / Window"]
         UI["UI"]
         B_GS["API GLOBALSTORAGE"]
-        
+
         UI -- "call to api" --> B_GS
         B_GS -- "subscription" --> UI
     end
@@ -21,13 +21,13 @@ flowchart TB
         BLR["BUSINESS LOGIC RUNNER"]
         DQ["Δ Queue"]
         MC["metacom"]
-        
+
         S_GS -- "event" --> B_GS
         B_GS -- "command pattern" --> BLR
-        
+
         BLR -- "call" --> S_GS
         S_GS -- "subscription" --> BLR
-        
+
         S_GS -- "Δ" --> DQ
         DQ -- "Δ" --> MC
         MC -- "Δ" --> S_GS
@@ -36,7 +36,7 @@ flowchart TB
     subgraph Remote ["Server"]
         SRV["SERVER"]
         FS["FS"]
-        
+
         MC <--> SRV
         SRV --> FS
     end
@@ -81,6 +81,7 @@ flowchart TB
 The evolution of the XXII Chat architecture from a simple Web API to a full local-first system with synchronization.
 
 ### Stage 1 & 2: Basic Connection & Service Worker
+
 ```mermaid
 flowchart LR
     subgraph Stage1 ["Stage 1: Pure Web API"]
@@ -97,6 +98,7 @@ flowchart LR
 ```
 
 ### Stage 3 & 4: Metacom & Local-First Sync
+
 ```mermaid
 flowchart LR
     subgraph Stage3 ["Stage 3: Metacom"]
@@ -114,7 +116,7 @@ flowchart LR
             BLR4["B/L Runner"]
             GS4_SW["Globalstorage"]
             WST4["Websocket Transport"]
-            
+
             MP4 <--> GS4_SW
             BLR4 <--> GS4_SW
             GS4_SW <--> WST4
@@ -141,13 +143,13 @@ erDiagram
 
     Feed ||--o{ Post : "contains"
     Chat ||--o{ Message : "contains"
-    
+
     Post ||--o{ Reaction : "has"
     Message ||--o{ Reaction : "has"
-    
+
     Message ||--o{ File : "attach"
     Post ||--o{ File : "attach"
-    
+
     Folder ||--o{ Folder : "parent"
     Folder ||--o{ File : "contains"
 ```

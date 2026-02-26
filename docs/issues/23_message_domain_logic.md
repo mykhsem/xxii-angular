@@ -38,5 +38,3 @@ Refs: `./25_message_ui_logic.md`
 - Parse mentions from content
 - Store derived metadata (not backend): mentions: Author[]
 - Mention highlighting works without server help
-
-

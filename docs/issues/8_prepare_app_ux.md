@@ -1,5 +1,6 @@
-# Prepare App UX
+# Prepare App UX — [DONE]
 
+**Status:** Completed 2026-02-26  
 Refs: `./9_prepare_app_ui.md`, `./5_screen_layout.md`
 
 Target platforms: Web (primary), iOS, Android, Desktop (PWA / Electron)
@@ -20,25 +21,25 @@ Target platforms: Web (primary), iOS, Android, Desktop (PWA / Electron)
 
 ### Global hotkeys
 
-| Hotkey | Action |
-| ------ | ------ |
-| Ctrl+F | Focus search input (opens right panel Search tab) |
-| Ctrl+P | Open pinned list in right panel |
-| Ctrl+K | Command palette placeholder (future) |
+| Hotkey | Action                                                     |
+| ------ | ---------------------------------------------------------- |
+| Ctrl+F | Focus search input (opens right panel Search tab)          |
+| Ctrl+P | Open pinned list in right panel                            |
+| Ctrl+K | Command palette placeholder (future)                       |
 | Escape | Close right panel, dismiss modal, or cancel current action |
 
 ## Layout & responsiveness
 
 - 3-column layout with draggable column borders (`resizable` directive)
 - Column min/max widths:
-    - Left sidebar: min `200px`, max `360px`, default `260px`
-    - Center content: min `400px`, flexible (fills remaining space)
-    - Right panel: min `280px`, max `480px`, default `320–400px`
+  - Left sidebar: min `200px`, max `360px`, default `260px`
+  - Center content: min `400px`, flexible (fills remaining space)
+  - Right panel: min `280px`, max `480px`, default `320–400px`
 - **Breakpoints**:
-    - `≥1280px`: all three columns visible
-    - `1024–1279px`: right panel overlays center as slide-over
-    - `768–1023px`: left sidebar collapses to icon-only rail (~48px), right panel overlays
-    - `<768px`: left sidebar hidden (hamburger toggle), right panel full-screen overlay, composer always visible
+  - `≥1280px`: all three columns visible
+  - `1024–1279px`: right panel overlays center as slide-over
+  - `768–1023px`: left sidebar collapses to icon-only rail (~48px), right panel overlays
+  - `<768px`: left sidebar hidden (hamburger toggle), right panel full-screen overlay, composer always visible
 - Column gap: `1px` solid `Border` color separator, no padding gap
 - Each column scrolls independently with thin styled scrollbars
 
