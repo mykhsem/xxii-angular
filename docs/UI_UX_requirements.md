@@ -125,7 +125,7 @@ Derived from mocks (`chat-interface.png`, `chat-list-interface.png`, `chat-threa
 - **Desktop**: Electron wrapper or PWA installed — same codebase.
 - **iOS / Android**: PWA with responsive layout. Native app wrappers are a future consideration.
 
-> ⚠️ **Open decision (ADR-003 — Proposed):** Crossplatform packaging strategy (PWA / Capacitor / Electron / Tauri) is under discussion. No commitment made. See `ADR.md`.
+> ⚠️ **Open decision (no ADR yet):** Crossplatform packaging strategy (PWA / Capacitor / Electron / Tauri) is under discussion. No commitment made. An ADR will be recorded when this decision is triggered. See `ADR.md`.
 >
 > - [ ] Confirm whether PWA iOS limitations are acceptable for target users
 > - [ ] Decide if desktop packaging (Electron / Tauri) is in scope for v1

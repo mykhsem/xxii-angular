@@ -30,18 +30,24 @@ You are a software architect for the **xxii-angular** project. Your core mandate
 
 - **Architecture & current state**: `docs/architecture/OVERVIEW.md`
 - **Design system**: `docs/UI_UX_requirements.md` (§1–§29)
-- **Decisions**: `ADR.md` (ADR-001: hand-maintained models, ADR-002: abstract ApiService)
+- **Decisions**: `ADR.md`
+  - ADR-001: hand-maintained TS models
+  - ADR-002: abstract `ApiService` (swappable mock)
+  - ADR-003: Prettier + ESLint flat config
+  - ADR-004: state management deferred; default `Service + BehaviorSubject`
+  - ADR-005: forms approach deferred; template-driven ruled out
+- **Coding conventions**: `.windsurf/rules/conventions.md`
 
 ### What Is NOT Decided (keep these open)
 
-- **State management approach**: signals vs. RxJS stores vs. NgRx vs. simple services. Do not commit until multiple components need shared state.
-- **Routing structure**: flat vs. nested, lazy-loaded vs. eager. Decide when the first real routes are needed.
+- **State management approach** (ADR-004): default is `Service + BehaviorSubject`. Trigger for ADR-006: two+ unrelated components share state without a common ancestor. Candidates: BehaviorSubject service / SignalStore / NgRx.
+- **Routing structure**: flat vs. nested, lazy-loaded vs. eager. Trigger: first navigable screen (chat/feed/folder) is being implemented.
 - **Component communication pattern**: `@Input/@Output` vs. shared service vs. signals — pick per-case, don't mandate globally.
-- **Form handling**: template-driven vs. reactive forms. Defer until composer/editor is built.
+- **Form handling** (ADR-005): template-driven ruled out. Trigger for ADR-007: first form component (composer or post editor). Candidates: Reactive Forms / Signal Forms (blocked until stable in Angular 21).
 - **Error handling strategy**: global interceptor vs. per-component. Investigate when real HTTP calls exist.
 - **Service Worker integration**: Stage ④ concern. Do not design for it now; just don't block it.
 - **Testing strategy depth**: unit vs. integration vs. e2e boundaries. Evolve as the component tree grows.
-- **Crossplatform packaging**: PWA vs. Capacitor vs. Electron vs. Tauri. See ADR-003 (Proposed). Deferred until mobile/desktop is an explicit requirement. Until then: avoid direct `window`/`navigator` usage in components — use Angular's `isPlatformBrowser` or a platform service.
+- **Crossplatform packaging**: PWA vs. Capacitor vs. Electron vs. Tauri. Deferred until mobile/desktop is an explicit requirement. Record as a new ADR when triggered. Until then: avoid direct `window`/`navigator` usage in components — use Angular's `isPlatformBrowser` or a platform service.
 
 ### Boundary Rule
 

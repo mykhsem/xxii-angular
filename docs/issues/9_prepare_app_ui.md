@@ -4,7 +4,7 @@ Refs: `./8_prepare_app_ux.md`, `./5_screen_layout.md`
 
 Target platforms: Web (primary), iOS, Android, Desktop (PWA / Electron)
 
-> Packaging strategy deferred — see ADR-003 (Proposed) in `ADR.md`.
+> Packaging strategy deferred — no ADR yet. Will be recorded when crossplatform packaging decision is triggered. See `ADR.md`.
 
 ## Screens list
 

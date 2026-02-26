@@ -207,6 +207,15 @@ No box-shadows — depth conveyed through background color layering (Background 
 
 ## State Management Patterns
 
+### Shared State — Current Default
+
+**`Service + BehaviorSubject`** is the current default for all shared state (see ADR-004).
+
+No state management library is in use. Decision is deferred until the trigger fires:
+> Two or more unrelated components need to read or write the same state slice without a shared ancestor in the component tree.
+
+When triggered: evaluate `Service + BehaviorSubject` (upgrade), `SignalStore`, or `NgRx` → record as ADR-006.
+
 ### Global UI States
 
 Every data-driven component implements four states:
@@ -230,6 +239,14 @@ Every data-driven component implements four states:
 ### Reactive Data Flow
 
 Components inject `ApiService` → subscribe to `Observable<T>` → render via `async` pipe or signal-based subscription. Mock layer uses `shareReplay(1)` for caching. Real backend will use Globalstorage subscriptions with event-driven updates.
+
+**RxJS conventions** (enforce in code review):
+- Use `takeUntilDestroyed` for subscription cleanup — no manual `unsubscribe()` in components
+- Prefer `async` pipe in templates over subscribing in `ngOnInit`
+- `catchError` at the **service boundary** — components receive a fallback value, not a thrown error
+- No nested subscribes — flatten with `switchMap` / `mergeMap` / `combineLatest`
+
+**Angular API stability rule**: Angular 21 is the baseline. Only use APIs marked **stable** in Angular 21 docs. `experimental` and `developer preview` features are blocked until they reach stable (e.g. Signal Forms — see ADR-005).
 
 ## Interaction Model
 
@@ -272,6 +289,9 @@ Minimal, consistent with terminal aesthetic:
 | --- | -------- | ------ |
 | ADR-001 | Hand-maintained TS interfaces in `src/app/models/` mirroring `xxii-schema` | Accepted |
 | ADR-002 | Abstract `ApiService` with DI-swappable `MockApiService` (`shareReplay` cached) | Accepted |
+| ADR-003 | Prettier + ESLint with flat config | Accepted |
+| ADR-004 | State management deferred; default `Service + BehaviorSubject` until trigger fires | Accepted |
+| ADR-005 | Forms approach deferred until first form component; template-driven ruled out | Accepted |
 
 ## Future Architecture Evolution
 

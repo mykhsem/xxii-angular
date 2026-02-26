@@ -6,7 +6,7 @@ This document collects all architectural decisions made in the project to keep h
 
 ## ADR-001: Derive TypeScript interfaces from xxii-schema
 
-**Date:** 2025-02-21
+**Date:** 2026-02-21
 
 **Status:** Accepted
 
@@ -33,7 +33,7 @@ Key mapping rules:
 
 ## ADR-002: Abstract ApiService with swappable mock implementation
 
-**Date:** 2025-02-21
+**Date:** 2026-02-21
 
 **Status:** Accepted
 
@@ -58,7 +58,7 @@ Mock data in `public/mock-data.json` contains realistic interconnected records f
 
 ## ADR-003: Prettier + ESLint with flat config
 
-**Date:** 2025-02-22
+**Date:** 2026-02-22
 
 **Status:** Accepted
 
@@ -85,3 +85,67 @@ Adopt a two-tool approach: Prettier owns formatting, ESLint owns code quality. N
 - `max-len` removed — Prettier handles line width; the ESLint rule creates false positives on unbreakable lines.
 - Base `no-shadow` is `off` in favor of `@typescript-eslint/no-shadow` to avoid false positives on TS constructs.
 - When `angular-eslint` supports ESLint 10, upgrade both `eslint` and `@eslint/js` together.
+
+---
+
+## ADR-004: Defer state management decision
+
+**Date:** 2026-02-26
+
+**Status:** Accepted
+
+**Context:**
+The app is in early development — no components exist that share state across siblings or across routes. The three candidates are:
+- `Service + BehaviorSubject` — standard Angular, zero new dependencies, fully reversible
+- `SignalStore` (`@ngrx/signals`) — Angular 19+ signals-based, lighter than NgRx, still maturing
+- `NgRx` — battle-tested, high boilerplate, significant irreversible commitment
+
+No concrete evidence exists today that `Service + BehaviorSubject` is insufficient. Adding a store library now would be speculative generality.
+
+**Decision:**
+Default to `Service + BehaviorSubject` for all shared state until the trigger condition is met.
+
+Trigger for revisiting: **two or more unrelated components** need to read or write the same state slice without a shared ancestor in the component tree.
+
+When triggered, record as ADR-005 choosing between: BehaviorSubject service (do-nothing upgrade), SignalStore, or NgRx.
+
+**Alternatives rejected:**
+- SignalStore now — no components exist; adopting it today is a commitment without evidence of need.
+- NgRx now — high boilerplate cost, wide blast radius, irreversible in practice.
+
+**Consequences:**
+- No new dependencies introduced.
+- `BehaviorSubject` services are trivially replaceable — low reversibility cost if the decision changes.
+- Risk: if the trigger is missed and state grows complex before ADR-005 is written, refactoring cost increases. Mitigation: review on each new feature service.
+
+---
+
+## ADR-005: Defer forms approach decision
+
+**Date:** 2026-02-26
+
+**Status:** Accepted
+
+**Context:**
+No form component exists in the codebase. The candidates are:
+- `ReactiveFormsModule` — explicit, testable, imperative control; well-established
+- Signal Forms (Angular 19+ experimental) — signals-based, tighter Angular integration, still `developer preview` as of Angular 21
+
+Building infrastructure for either before a single form exists violates the Last Responsible Moment principle.
+
+**Decision:**
+Do not import or configure any forms module until the first form component (message composer or post editor) is being built.
+
+Trigger for decision: first form component implementation begins.
+
+When triggered, record as ADR-006. Template-driven forms are pre-ruled-out (poor testability, implicit state).
+
+**Alternatives rejected:**
+- Reactive Forms now — premature; no form exists to justify the import.
+- Signal Forms now — `developer preview` in Angular 21; blocked by the Angular API stability rule.
+
+**Consequences:**
+- Zero forms-related code or imports in the codebase until needed.
+- Decision point is clear and unambiguous (start of composer/post editor work).
+- Signal Forms may reach stable status before the trigger fires — re-evaluate at that point.
+
