@@ -39,6 +39,7 @@ When building a component:
 When reviewing a component's visual implementation:
 
 ### Fidelity
+
 - [ ] Matches mock screenshot pixel-accurately (spacing, alignment, color, typography)
 - [ ] All design tokens used — no raw hex, no magic numbers
 - [ ] Bracket notation `[label]` on all buttons
@@ -46,6 +47,7 @@ When reviewing a component's visual implementation:
 - [ ] No box-shadows, no rounded corners >2px, no gradients
 
 ### Completeness
+
 - [ ] All 4 global states implemented (loading/empty/error/success)
 - [ ] All interaction states styled (hover/focus/active/disabled/selected)
 - [ ] Responsive behavior at all 4 breakpoints
@@ -53,12 +55,14 @@ When reviewing a component's visual implementation:
 - [ ] Animation timings match spec (150ms panels, 100ms hovers, 100ms modals)
 
 ### Consistency
+
 - [ ] Same component patterns as siblings (e.g., all sidebar rows identical format)
 - [ ] Spacing follows the 4px base unit scale — no arbitrary values
 - [ ] Color usage matches token purpose (green=accent, yellow=secondary, red=error, blue=link)
 - [ ] Iconography uses specified symbols (§7), not custom icons
 
 ### Accessibility
+
 - [ ] ARIA roles and labels present
 - [ ] Focus ring visible and green
 - [ ] Touch targets ≥44px on mobile

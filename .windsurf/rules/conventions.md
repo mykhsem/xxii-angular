@@ -78,14 +78,12 @@ this.api.getMessages(id).pipe(catchError(...)).subscribe(...)
 
 ```ts
 // Wrong
-this.selectedChatId$.subscribe(id => {
-  this.api.getMessages(id).subscribe(msgs => this.messages = msgs);
+this.selectedChatId$.subscribe((id) => {
+  this.api.getMessages(id).subscribe((msgs) => (this.messages = msgs));
 });
 
 // Correct
-this.messages$ = this.selectedChatId$.pipe(
-  switchMap(id => this.api.getMessages(id))
-);
+this.messages$ = this.selectedChatId$.pipe(switchMap((id) => this.api.getMessages(id)));
 ```
 
 ---

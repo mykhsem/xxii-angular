@@ -25,14 +25,14 @@ You are an implementation developer for the **xxii-angular** project. Your manda
 
 ## File Structure & Naming
 
-| Artifact | Path | Example |
-| -------- | ---- | ------- |
-| Feature component | `src/app/features/<name>/` | `chat-timeline/chat-timeline.component.ts` |
-| Shared component | `src/app/shared/components/<name>/` | `sidebar-row/sidebar-row.component.ts` |
-| Pipe | `src/app/shared/pipes/` | `time-ago.pipe.ts` |
-| Directive | `src/app/shared/directives/` | `keyboard-nav.directive.ts` |
-| Service | `src/app/services/` | `ui-state.service.ts` |
-| Test | Co-located | `chat-timeline.component.spec.ts` |
+| Artifact          | Path                                | Example                                    |
+| ----------------- | ----------------------------------- | ------------------------------------------ |
+| Feature component | `src/app/features/<name>/`          | `chat-timeline/chat-timeline.component.ts` |
+| Shared component  | `src/app/shared/components/<name>/` | `sidebar-row/sidebar-row.component.ts`     |
+| Pipe              | `src/app/shared/pipes/`             | `time-ago.pipe.ts`                         |
+| Directive         | `src/app/shared/directives/`        | `keyboard-nav.directive.ts`                |
+| Service           | `src/app/services/`                 | `ui-state.service.ts`                      |
+| Test              | Co-located                          | `chat-timeline.component.spec.ts`          |
 
 Each component folder contains: `name.component.ts` (with inline or separate template/styles as appropriate for size). Keep templates inline if <50 lines; extract to `.html` if larger.
 
@@ -59,6 +59,7 @@ export class FeatureNameComponent {
 ```
 
 Key points:
+
 - Use `inject()` function, not constructor injection
 - Prefer `ChangeDetectionStrategy.OnPush` for data-driven components
 - Import only what the template uses (`AsyncPipe`, other components, pipes, directives)
@@ -82,16 +83,12 @@ readonly chats$ = this.api.getChats().pipe(
 ### Template consumption — prefer `async` pipe
 
 ```html
-@if (chats$ | async; as chats) {
-  @if (chats.length === 0) {
-    <p class="text-muted text-center py-8">No chats yet</p>
-  } @else {
-    @for (chat of chats; track chat.id) {
-      <app-sidebar-row [chat]="chat" />
-    }
-  }
-} @else {
-  <app-skeleton shape="list" />
+@if (chats$ | async; as chats) { @if (chats.length === 0) {
+<p class="text-muted text-center py-8">No chats yet</p>
+} @else { @for (chat of chats; track chat.id) {
+<app-sidebar-row [chat]="chat" />
+} } } @else {
+<app-skeleton shape="list" />
 }
 ```
 
@@ -118,29 +115,29 @@ Use built-in control flow — not structural directives:
 ```html
 <!-- Conditional -->
 @if (condition) {
-  <div>...</div>
+<div>...</div>
 } @else {
-  <div>...</div>
+<div>...</div>
 }
 
 <!-- Loop — track expression is required -->
 @for (item of items; track item.id) {
-  <div>{{ item.name }}</div>
+<div>{{ item.name }}</div>
 } @empty {
-  <p class="text-muted">No items</p>
+<p class="text-muted">No items</p>
 }
 
 <!-- Switch -->
-@switch (status) {
-  @case ('loading') { <app-skeleton /> }
-  @case ('error') { <app-error-banner [message]="error" (retry)="reload()" /> }
-  @default { <div>Content</div> }
-}
+@switch (status) { @case ('loading') { <app-skeleton /> } @case ('error') {
+<app-error-banner [message]="error" (retry)="reload()" /> } @default {
+<div>Content</div>
+} }
 ```
 
 ## Styling & Accessibility
 
 All visual rules are defined in `docs/UI_UX_requirements.md`. Key sections to follow:
+
 - **Design tokens** (§3) — always use Tailwind aliases or CSS variables, never raw hex
 - **Interaction states** (§24) — every interactive element must have hover, focus, active, disabled, selected
 - **Accessibility** (§27) — ARIA roles, focus ring, touch targets, `aria-live` on dynamic content
@@ -189,6 +186,7 @@ describe('FeatureNameComponent', () => {
 ```
 
 Key rules:
+
 - Mock `ApiService` with `vi.fn()` — never import `MockApiService` in tests
 - Test behavior, not DOM structure — prefer text content and observable state checks
 - Cover: creation, empty state, error state, and at least one success scenario
