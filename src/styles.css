@@ -1,1 +1,169 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+
+/* === Design Tokens === */
+:root {
+  /* Colors */
+  --color-background: #0d1117;
+  --color-surface: #161b22;
+  --color-border: #30363d;
+  --color-border-hover: #484f58;
+  --color-text-primary: #c9d1d9;
+  --color-text-muted: #8b949e;
+  --color-terminal-green: #4af626;
+  --color-user-yellow: #e3b341;
+  --color-user-red: #f85149;
+  --color-user-blue: #58a6ff;
+
+  /* Typography */
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --font-size-base: 13px;
+  --font-size-header: 14px;
+  --font-size-small: 11px;
+  --line-height-base: 1.5;
+  --line-height-tight: 1.2;
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* Layout */
+  --sidebar-left-width: 260px;
+  --sidebar-left-min: 200px;
+  --sidebar-left-max: 360px;
+  --panel-right-width: 320px;
+  --panel-right-min: 280px;
+  --panel-right-max: 480px;
+  --header-height: 32px;
+
+  /* Transitions */
+  --transition-fast: 100ms ease-out;
+  --transition-panel: 150ms ease-out;
+}
+
+/* === Global baseline === */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+}
+
+/* === Focus ring === */
+:focus-visible {
+  outline: 1px solid var(--color-terminal-green);
+  outline-offset: 2px;
+}
+
+/* === Scrollbars === */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-surface) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--color-border);
+  border-radius: 3px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-border-hover);
+}
+
+/* === Skip link === */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: var(--space-2);
+  z-index: 9999;
+  padding: var(--space-1) var(--space-3);
+  background: var(--color-surface);
+  color: var(--color-terminal-green);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-base);
+  border: 1px solid var(--color-terminal-green);
+  text-decoration: none;
+  transition: top var(--transition-fast);
+}
+
+.skip-link:focus {
+  top: var(--space-2);
+}
+
+/* === Tailwind color aliases via CSS layer === */
+@layer base {
+  .bg-app-background {
+    background-color: var(--color-background);
+  }
+  .bg-app-surface {
+    background-color: var(--color-surface);
+  }
+  .border-app-border {
+    border-color: var(--color-border);
+  }
+  .text-app-primary {
+    color: var(--color-text-primary);
+  }
+  .text-app-muted {
+    color: var(--color-text-muted);
+  }
+  .text-app-green {
+    color: var(--color-terminal-green);
+  }
+  .text-app-yellow {
+    color: var(--color-user-yellow);
+  }
+  .text-app-red {
+    color: var(--color-user-red);
+  }
+  .text-app-blue {
+    color: var(--color-user-blue);
+  }
+}
+
+/* === Utility classes === */
+.font-mono-app {
+  font-family: var(--font-mono);
+}
+
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.break-anywhere {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}

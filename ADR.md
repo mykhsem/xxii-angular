@@ -17,6 +17,7 @@ The project uses `xxii-schema` (Metarhia metaschema format) as the shared domain
 Manually maintain TypeScript interfaces in `src/app/models/` that mirror the `xxii-schema` definitions. Each schema entity (Author, Chat, Feed, File, Folder, Message, Node, Peer, Post) gets its own file with a barrel re-export via `index.ts`.
 
 Key mapping rules:
+
 - Schema relations (e.g. `owner: 'Author'`) → `string` (ID reference)
 - `many` relations → `string[]`
 - `?` optional fields → optional property (`field?: type`)
@@ -25,6 +26,7 @@ Key mapping rules:
 - `id: string` added explicitly (implicit in metaschema)
 
 **Consequences:**
+
 - Full compile-time type safety across the Angular app.
 - Interfaces must be updated manually when `xxii-schema` evolves.
 - The schema package remains the single source of truth for the backend; TypeScript interfaces are a projection for frontend consumption.
@@ -42,6 +44,7 @@ The backend API is not yet available, but the frontend needs data to develop and
 
 **Decision:**
 Introduce a two-layer API service design:
+
 - `ApiService` — abstract class defining the full data-access contract (methods returning `Observable<T>`).
 - `MockApiService` — concrete implementation that fetches `public/mock-data.json` via `HttpClient` and filters in memory.
 - Wired via Angular DI: `{ provide: ApiService, useClass: MockApiService }` in `app.config.ts`.
@@ -49,6 +52,7 @@ Introduce a two-layer API service design:
 Mock data in `public/mock-data.json` contains realistic interconnected records for all 9 entity types with consistent cross-references (author IDs in chats, chat IDs in messages, etc.).
 
 **Consequences:**
+
 - Components inject `ApiService` and are decoupled from the data source.
 - Switching to a real backend requires only creating `HttpApiService extends ApiService` and changing `useClass` in the provider — no component changes needed.
 - Mock data is served as a static asset, mimicking real HTTP latency and async patterns.
@@ -75,11 +79,13 @@ Adopt a two-tool approach: Prettier owns formatting, ESLint owns code quality. N
 - Pinned to `eslint@^9` due to `angular-eslint@21` peer dependency (does not yet support ESLint 10).
 
 **Alternatives considered:**
+
 1. **Do nothing** — formatting drift and no quality guardrails. Cost grows with every new contributor.
 2. **Prettier only** — covers formatting but misses Angular-specific patterns (OnPush, signals, control flow).
 3. **ESLint with formatting rules** — older approach, creates conflicts with Prettier, harder to maintain.
 
 **Consequences:**
+
 - All committed code must pass `prettier --check .` and `ng lint`.
 - `consistent-type-definitions` is `off` — existing codebase uses `interface`; can be revisited later.
 - `max-len` removed — Prettier handles line width; the ESLint rule creates false positives on unbreakable lines.
@@ -96,6 +102,7 @@ Adopt a two-tool approach: Prettier owns formatting, ESLint owns code quality. N
 
 **Context:**
 The app is in early development — no components exist that share state across siblings or across routes. The three candidates are:
+
 - `Service + BehaviorSubject` — standard Angular, zero new dependencies, fully reversible
 - `SignalStore` (`@ngrx/signals`) — Angular 19+ signals-based, lighter than NgRx, still maturing
 - `NgRx` — battle-tested, high boilerplate, significant irreversible commitment
@@ -110,10 +117,12 @@ Trigger for revisiting: **two or more unrelated components** need to read or wri
 When triggered, record as ADR-005 choosing between: BehaviorSubject service (do-nothing upgrade), SignalStore, or NgRx.
 
 **Alternatives rejected:**
+
 - SignalStore now — no components exist; adopting it today is a commitment without evidence of need.
 - NgRx now — high boilerplate cost, wide blast radius, irreversible in practice.
 
 **Consequences:**
+
 - No new dependencies introduced.
 - `BehaviorSubject` services are trivially replaceable — low reversibility cost if the decision changes.
 - Risk: if the trigger is missed and state grows complex before ADR-005 is written, refactoring cost increases. Mitigation: review on each new feature service.
@@ -128,6 +137,7 @@ When triggered, record as ADR-005 choosing between: BehaviorSubject service (do-
 
 **Context:**
 No form component exists in the codebase. The candidates are:
+
 - `ReactiveFormsModule` — explicit, testable, imperative control; well-established
 - Signal Forms (Angular 19+ experimental) — signals-based, tighter Angular integration, still `developer preview` as of Angular 21
 
@@ -141,11 +151,45 @@ Trigger for decision: first form component implementation begins.
 When triggered, record as ADR-006. Template-driven forms are pre-ruled-out (poor testability, implicit state).
 
 **Alternatives rejected:**
+
 - Reactive Forms now — premature; no form exists to justify the import.
 - Signal Forms now — `developer preview` in Angular 21; blocked by the Angular API stability rule.
 
 **Consequences:**
+
 - Zero forms-related code or imports in the codebase until needed.
 - Decision point is clear and unambiguous (start of composer/post editor work).
 - Signal Forms may reach stable status before the trigger fires — re-evaluate at that point.
 
+---
+
+## ADR-006: Routing structure — flat /:type/:id, lazy-loaded shell
+
+**Date:** 2026-02-26
+
+**Status:** Accepted
+
+**Context:**
+The first navigable screen (`AppShellComponent`) is being implemented, triggering the routing decision deferred in `local-notes.md` §1 and `backlog.md #28`. The app navigates between three context types (chat, feed, folder), each identified by an ID. The URL must reflect the current context for back-button support and deep linking.
+
+**Decision:**
+Adopt a flat `/:type/:id` URL pattern with `AppShellComponent` as the lazy-loaded layout component loaded at the `:type` route level.
+
+- Route: `/:type` → lazy loads `ShellComponent`
+- Child route: `/:type/:id` → same shell, `UiStateService` reads `type` and `id` from `ActivatedRoute`
+- Redirect: `/` → `/chat` (default context)
+- `ShellComponent` is lazy-loaded (`loadComponent`) — zero cost at bootstrap, loaded on first navigation
+
+**Alternatives considered:**
+
+1. **Eager shell in app.ts** — simpler initially, but makes the shell always present even before a route resolves; prevents clean code-splitting later.
+2. **Named router outlets** (center/right panel as separate outlets) — overcomplicated; the right panel is UI state not a navigation event; `UiStateService` handles it more simply.
+3. **Nested feature routes** (`/chat/:id/members`, `/chat/:id/pins`) — right panel tabs are not separate pages; representing them as routes would break back-button semantics.
+
+**Consequences:**
+
+- URL reflects context type and ID: `/chat/abc123`, `/feed/xyz`, `/folder/root`
+- Back button navigates between previously selected items (correct UX per spec)
+- Right panel open/closed state is NOT in the URL — it is ephemeral UI state in `UiStateService`
+- Adding new context types in the future requires only adding a new `:type` value and center content component — no routing changes
+- Closes `backlog.md #28`

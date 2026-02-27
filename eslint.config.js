@@ -21,14 +21,8 @@ module.exports = tseslint.config(
     ],
     processor: angular.processInlineTemplates,
     rules: {
-      '@angular-eslint/directive-selector': [
-        'error',
-        { type: 'attribute', prefix, style: 'camelCase' },
-      ],
-      '@angular-eslint/component-selector': [
-        'error',
-        { type: ['attribute', 'element'], prefix, style: 'kebab-case' },
-      ],
+      '@angular-eslint/directive-selector': ['error', { type: 'attribute', prefix, style: 'camelCase' }],
+      '@angular-eslint/component-selector': ['error', { type: ['attribute', 'element'], prefix, style: 'kebab-case' }],
 
       // Angular best practices
       '@angular-eslint/no-empty-lifecycle-method': 'warn',
@@ -43,10 +37,7 @@ module.exports = tseslint.config(
       '@typescript-eslint/consistent-type-assertions': 'warn',
       '@typescript-eslint/consistent-type-definitions': 'off',
       '@typescript-eslint/explicit-function-return-type': 'error',
-      '@typescript-eslint/explicit-member-accessibility': [
-        'error',
-        { accessibility: 'no-public' },
-      ],
+      '@typescript-eslint/explicit-member-accessibility': ['error', { accessibility: 'no-public' }],
       '@typescript-eslint/naming-convention': [
         'warn',
         { selector: 'variable', format: ['camelCase', 'UPPER_CASE', 'PascalCase'] },
@@ -75,10 +66,7 @@ module.exports = tseslint.config(
       'one-var': ['error', 'never'],
       'prefer-arrow-callback': 'error',
       'prefer-const': 'error',
-      'sort-imports': [
-        'error',
-        { ignoreCase: true, ignoreDeclarationSort: true, allowSeparatedGroups: true },
-      ],
+      'sort-imports': ['error', { ignoreCase: true, ignoreDeclarationSort: true, allowSeparatedGroups: true }],
 
       // Security
       'no-eval': 'error',
@@ -87,10 +75,7 @@ module.exports = tseslint.config(
   },
   {
     files: ['**/*.html'],
-    extends: [
-      ...angular.configs.templateRecommended,
-      ...angular.configs.templateAccessibility,
-    ],
+    extends: [...angular.configs.templateRecommended, ...angular.configs.templateAccessibility],
     rules: {
       '@angular-eslint/template/attributes-order': [
         'error',

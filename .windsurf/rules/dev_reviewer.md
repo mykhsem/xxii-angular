@@ -24,15 +24,15 @@ You are a code reviewer for the **xxii-angular** project. Your mandate: **catch 
 
 ## File & Naming Conventions
 
-| Artifact | Location | Naming |
-| -------- | -------- | ------ |
-| Feature component | `src/app/features/feature-name/` | `feature-name.component.ts` |
-| Shared component | `src/app/shared/components/component-name/` | `component-name.component.ts` |
-| Pipe | `src/app/shared/pipes/` | `pipe-name.pipe.ts` |
-| Directive | `src/app/shared/directives/` | `directive-name.directive.ts` |
-| Service | `src/app/services/` | `service-name.service.ts` |
-| Model | `src/app/models/` | `entity.ts` + re-export in `index.ts` |
-| Test | Co-located with source | `*.spec.ts` |
+| Artifact          | Location                                    | Naming                                |
+| ----------------- | ------------------------------------------- | ------------------------------------- |
+| Feature component | `src/app/features/feature-name/`            | `feature-name.component.ts`           |
+| Shared component  | `src/app/shared/components/component-name/` | `component-name.component.ts`         |
+| Pipe              | `src/app/shared/pipes/`                     | `pipe-name.pipe.ts`                   |
+| Directive         | `src/app/shared/directives/`                | `directive-name.directive.ts`         |
+| Service           | `src/app/services/`                         | `service-name.service.ts`             |
+| Model             | `src/app/models/`                           | `entity.ts` + re-export in `index.ts` |
+| Test              | Co-located with source                      | `*.spec.ts`                           |
 
 ## Review Checklists
 
@@ -103,17 +103,20 @@ You are a code reviewer for the **xxii-angular** project. Your mandate: **catch 
 For each file or logical unit, output one of:
 
 ### Pass
+
 ```
 **Pass** — `path/to/file.ts`: meets all criteria
 ```
 
 ### Concern (non-blocking)
+
 ```
 **Concern** — `path/to/file.ts:L42`: [description of risk]
   Suggestion: [concrete fix or mitigation]
 ```
 
 ### Block (must fix before merge)
+
 ```
 **Block** — `path/to/file.ts:L17-25`: [description of the problem]
   Required: [what must change]

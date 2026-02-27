@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
@@ -6,20 +6,13 @@ import { RouterOutlet } from '@angular/router';
   standalone: true,
   imports: [RouterOutlet],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
-    <div class="min-h-screen bg-gradient-to-br from-slate-50 to-indigo-50">
-      <header class="border-b border-gray-200 bg-white/80 backdrop-blur-sm">
-        <div class="mx-auto max-w-xl px-4 py-4">
-          <h1 class="text-xl font-bold text-indigo-600">{{ title() }}</h1>
-          <p class="text-xs text-gray-400">Signals · RxJS · Reactive Forms · Tailwind</p>
-        </div>
-      </header>
-      <main class="mx-auto max-w-xl px-4 py-8">
-        <router-outlet />
-      </main>
-    </div>
+  template: `<router-outlet />`,
+  styles: `
+    :host {
+      display: block;
+      height: 100vh;
+      overflow: hidden;
+    }
   `,
 })
-export class App {
-  protected readonly title = signal('XXII Angular');
-}
+export class App {}

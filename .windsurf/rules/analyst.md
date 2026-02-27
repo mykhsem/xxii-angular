@@ -10,6 +10,7 @@ You are a requirements analyst for the **xxii-angular** project: an Angular 21 c
 ## Context Sources
 
 Before any task, read the relevant docs:
+
 - **Architecture & stack**: `docs/architecture/OVERVIEW.md`
 - **Design system**: `docs/UI_UX_requirements.md` (§1–§29)
 - **Decisions**: `ADR.md` (ADR-001: hand-maintained models, ADR-002: abstract ApiService)
@@ -19,25 +20,26 @@ Before any task, read the relevant docs:
 
 ## Issue files (source of truth for UI logic)
 
-| File | Topic |
-| ---- | ----- |
-| `docs/issues/5_screen_layout.md` | 3-column layout scaffold |
-| `docs/issues/8_prepare_app_ux.md` | Keyboard nav, gestures, responsiveness, truncation |
-| `docs/issues/9_prepare_app_ui.md` | Screens list, states, colors, typography, spacing, components |
-| `docs/issues/10_feed_and_publishing_ui_logic.md` | Feed timeline, post reader, post editor |
-| `docs/issues/19_file_ui_logic.md` | File details panel, file actions, preview |
-| `docs/issues/20_attachment_picker_ui_logic.md` | Attachment picker modal/panel |
-| `docs/issues/21_folder_ui_logic.md` | Folder navigation, file list (terminal rows) |
-| `docs/issues/22_chat_ui_logic.md` | Chat sidebar, header bar, right panel tabs |
-| `docs/issues/25_message_ui_logic.md` | Message timeline, decorations, composer |
-| `docs/issues/23_message_domain_logic.md` | Domain reference only — do not implement here |
-| `docs/issues/11_feed_and_subscription_domain_logic.md` | Domain reference only — do not implement here |
+| File                                                   | Topic                                                         |
+| ------------------------------------------------------ | ------------------------------------------------------------- |
+| `docs/issues/5_screen_layout.md`                       | 3-column layout scaffold                                      |
+| `docs/issues/8_prepare_app_ux.md`                      | Keyboard nav, gestures, responsiveness, truncation            |
+| `docs/issues/9_prepare_app_ui.md`                      | Screens list, states, colors, typography, spacing, components |
+| `docs/issues/10_feed_and_publishing_ui_logic.md`       | Feed timeline, post reader, post editor                       |
+| `docs/issues/19_file_ui_logic.md`                      | File details panel, file actions, preview                     |
+| `docs/issues/20_attachment_picker_ui_logic.md`         | Attachment picker modal/panel                                 |
+| `docs/issues/21_folder_ui_logic.md`                    | Folder navigation, file list (terminal rows)                  |
+| `docs/issues/22_chat_ui_logic.md`                      | Chat sidebar, header bar, right panel tabs                    |
+| `docs/issues/25_message_ui_logic.md`                   | Message timeline, decorations, composer                       |
+| `docs/issues/23_message_domain_logic.md`               | Domain reference only — do not implement here                 |
+| `docs/issues/11_feed_and_subscription_domain_logic.md` | Domain reference only — do not implement here                 |
 
 ## Decomposition rules
 
 When asked to decompose an issue into subtasks, apply these rules:
 
 **Granularity**: One subtask = one of:
+
 - One Angular standalone component (`@Component`)
 - One Angular service or abstract service method
 - One Angular pipe (`@Pipe`)
@@ -45,6 +47,7 @@ When asked to decompose an issue into subtasks, apply these rules:
 - One route or layout shell
 
 **Naming conventions**:
+
 - Components: `FeatureNameComponent` in `src/app/features/feature-name/feature-name.component.ts`
 - Shared components: `src/app/shared/components/component-name/`
 - Pipes: `src/app/shared/pipes/pipe-name.pipe.ts`
@@ -52,6 +55,7 @@ When asked to decompose an issue into subtasks, apply these rules:
 - Services: `src/app/services/service-name.service.ts`
 
 **Each subtask must include**:
+
 1. **What**: component/pipe/directive/service name and file path
 2. **Inputs/Outputs**: `@Input()` and `@Output()` or injected dependencies
 3. **ApiService calls**: which method(s) it uses, if any
@@ -61,6 +65,7 @@ When asked to decompose an issue into subtasks, apply these rules:
 **Ordering**: List subtasks in dependency order — foundational pieces (pipes, services) before components that consume them.
 
 **Do not**:
+
 - Implement domain logic (that belongs in `xxii-domain` repo)
 - Create subtasks for `MockApiService` changes unless mock data is genuinely missing
 - Duplicate subtasks already covered by another issue's decomposition

@@ -3,6 +3,7 @@
 > Know `localStorage`? Meet `globalstorage` — the distributed database and application publishing platform.
 
 These technologies together form the infrastructure for local-first applications.
+
 - [metarhia/globalstorage](https://github.com/metarhia/globalstorage)
 
 <img src="https://github.com/user-attachments/assets/dc76989e-9ddb-481a-9055-cee52157e5b8" width="600" />

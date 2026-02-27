@@ -12,11 +12,13 @@ refs: `./19_file_ui_logic.md`, `./21_folder_ui_logic.md`
 ## Tabs
 
 ### Recent
+
 - Shows recently used/uploaded files for the current author
 - Each row: `📄 name  size  mime  modified` — same terminal row format as folder view
 - Click to toggle selection (checkbox or highlight)
 
 ### Folder browse
+
 - Folder list at top: flat list of folders from `ApiService.getFolders()`
 - Selecting a folder loads its files via `ApiService.getFiles(folderId)`
 - File rows same format as Recent tab
@@ -24,6 +26,7 @@ refs: `./19_file_ui_logic.md`, `./21_folder_ui_logic.md`
 - Breadcrumb or back button for navigation context
 
 ### Upload
+
 - Drag-and-drop zone or `[Choose file]` button to select from OS file dialog
 - Shows upload progress bar per file
 - After upload completes, file appears in selected list
