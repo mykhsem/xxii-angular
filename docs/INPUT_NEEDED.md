@@ -13,11 +13,12 @@ Each concern is tagged with the role that raised it and the affected issue file(
 Every issue file describes _what_ to build but none contains the `### [N]. SubtaskName` decomposition format required by the analyst role. Dev coder cannot start work without these.  
 **Action needed**: decompose each UI issue into Angular subtasks (component / pipe / directive / service method) in dependency order.
 
-### A2 — Right panel: Files tab has no section
+### A2 — Right panel: Files tab has no section — [RESOLVED]
 
 **Affects**: `22_chat_ui_logic.md`  
 The header action buttons list `[Search]` `[Pin list]` `[Members]` `[Files]`, and Members/Pins/Search each have a dedicated `## Right panel: X tab` section. The **Files tab** has no section at all — no spec for what it renders, which `ApiService` call it uses, or how file rows are formatted.  
-**Action needed**: add `## Right panel: Files tab` section to `22_chat_ui_logic.md`.
+**Action needed**: add `## Right panel: Files tab` section to `22_chat_ui_logic.md`.  
+**Resolution**: `RightPanelComponent` (`src/app/shell/right-panel/right-panel.component.ts`) implements the Files tab — renders `file.name`, `file.mime`, and formatted `file.size` rows sourced from `ApiService.getFiles()`.
 
 ### A3 — Emoji picker is unspecified
 
@@ -49,33 +50,37 @@ Post reader mode mentions "threaded replies section (same format as thread panel
 Shared concepts appear in multiple issues with potentially inconsistent descriptions: sidebar row format, right panel open/close contract, composer state machine, file row format. No single document reconciles these.  
 **Action needed**: create a cross-issue consistency section (or separate doc) defining the canonical format for shared UI patterns.
 
-### A8 — App header peer count has no data source
+### A8 — App header peer count has no data source — [RESOLVED]
 
 **Affects**: `5_screen_layout.md`  
 The header shows `peers: N` but no issue references which `ApiService` method provides this count or how it updates live.  
-**Action needed**: specify data source and update mechanism for peer count.
+**Action needed**: specify data source and update mechanism for peer count.  
+**Resolution**: `HeaderComponent` (`src/app/shell/header/header.component.ts`) injects `ApiService` and derives `peerCount$` via `getPeers().pipe(map(peers => peers.length))`, rendered live with `async` pipe.
 
 ---
 
 ## 🏛️ Architect
 
-### AR1 — No issue covers ApiService method expansion
+### AR1 — No issue covers ApiService method expansion — [RESOLVED]
 
 **Affects**: all feature issues  
 Every feature issue assumes methods like `getMessages()`, `getPosts()`, `getFiles()`, `getFolders()`, `getAuthor()` exist on `ApiService`, but no issue tracks adding them to the abstract contract. The abstract service is the single most-blocking dependency.  
-**Action needed**: create an issue (or ADR entry) defining the full `ApiService` method surface before feature work begins.
+**Action needed**: create an issue (or ADR entry) defining the full `ApiService` method surface before feature work begins.  
+**Resolution**: `ApiService` (`src/app/services/api.service.ts`) is a fully defined abstract class with 14 methods covering all 9 entity types (Author, Chat, Message, Feed, Post, Folder, File, Node, Peer). `MockApiService` provides the concrete implementation via `mock-data.json`.
 
-### AR2 — State management approach not decided
+### AR2 — State management approach not decided — [RESOLVED]
 
 **Affects**: `5_screen_layout.md`, `22_chat_ui_logic.md`, `25_message_ui_logic.md`  
 Active chat ID, right panel tab, sidebar collapse state, and composer draft are shared UI state. The architect rule explicitly defers this decision, but no issue defines even the minimal `UiStateService` shape needed to unblock layout work.  
-**Action needed**: decide (and record in `ADR.md`) the minimal state management approach for shared UI state. Candidate: simple service + `BehaviorSubject` until proven insufficient.
+**Action needed**: decide (and record in `ADR.md`) the minimal state management approach for shared UI state. Candidate: simple service + `BehaviorSubject` until proven insufficient.  
+**Resolution**: `UiStateService` (`src/app/services/ui-state.service.ts`) implemented with `BehaviorSubject<UiState>` holding `activeItemType`, `activeItemId`, `leftSidebarOpen`, `rightPanelOpen`, `rightPanelTab`. Decision recorded in `ADR-004`.
 
-### AR3 — Routing structure not decided or documented
+### AR3 — Routing structure not decided or documented — [RESOLVED]
 
 **Affects**: `9_prepare_app_ui.md`  
 The URL scheme `/:type/:id` is implied in `9_prepare_app_ui.md` but no ADR records the routing decision (flat vs. nested, lazy vs. eager, 404 behavior, redirect on no selection). `app.routes.ts` exists but is empty.  
-**Action needed**: record routing decision in `ADR.md` and create a routing issue.
+**Action needed**: record routing decision in `ADR.md` and create a routing issue.  
+**Resolution**: `app.routes.ts` defines `/:type` → lazy `ShellComponent`, `/:type/:id` child route, and `/` → `/chat` redirect. Full rationale (flat vs nested, lazy vs eager, right panel not in URL) recorded in `ADR-006`.
 
 ### AR4 — Draft persistence key schema undefined
 
@@ -83,11 +88,12 @@ The URL scheme `/:type/:id` is implied in `9_prepare_app_ui.md` but no ADR recor
 Both issues mention `localStorage` for draft persistence but no issue defines the key schema (e.g., `draft:chat:<id>`, `draft:post:<id>`), size limits, or conflict behavior on concurrent edits.  
 **Action needed**: define key schema in the relevant issue or a shared persistence spec.
 
-### AR5 — Column resize persistence strategy undefined
+### AR5 — Column resize persistence strategy undefined — [RESOLVED]
 
 **Affects**: `5_screen_layout.md`, `8_prepare_app_ux.md`  
 Draggable column borders are specified but no issue defines how the `resizable` directive stores/restores column widths (localStorage key, format, fallback to defaults).  
-**Action needed**: specify persistence contract for column widths.
+**Action needed**: specify persistence contract for column widths.  
+**Resolution**: `ResizableDirective` (`src/app/shared/directives/resizable.directive.ts`) accepts a `storageKey` input; persists width to `localStorage` under that key on drag end; restores on init with fallback to `defaultWidth`. Shell uses keys `xxii.layout.leftSidebar` and `xxii.layout.rightPanel`.
 
 ---
 
@@ -117,23 +123,26 @@ The pipe is referenced but parsing rules are not defined: regex pattern, handlin
 Post content is "markdown-rendered via `markdown` pipe" but the supported subset is unspecified (bold? code blocks? tables? images?) and sanitization strategy is not defined.  
 **Action needed**: specify supported markdown subset and sanitization approach.
 
-### D5 — `clickOutside` directive not tracked as a deliverable
+### D5 — `clickOutside` directive not tracked as a deliverable — [RESOLVED]
 
 **Affects**: `20_attachment_picker_ui_logic.md`, `8_prepare_app_ux.md`  
 Referenced in two issues but no issue defines it as a component to build (path, inputs, outputs, events).  
-**Action needed**: add as a subtask in `20_attachment_picker_ui_logic.md` or `9_prepare_app_ui.md`.
+**Action needed**: add as a subtask in `20_attachment_picker_ui_logic.md` or `9_prepare_app_ui.md`.  
+**Resolution**: `ClickOutsideDirective` delivered at `src/app/shared/directives/click-outside.directive.ts` — emits `clickedOutside` event via `fromEvent(DOCUMENT)` + `takeUntilDestroyed`. Covered by 4 unit tests.
 
-### D6 — `resizable` directive not tracked as a deliverable
+### D6 — `resizable` directive not tracked as a deliverable — [RESOLVED]
 
 **Affects**: `8_prepare_app_ux.md`, `5_screen_layout.md`  
 Referenced but no issue defines it as a component to build (inputs for min/max, output for width change, persistence hook).  
-**Action needed**: add as a subtask in `5_screen_layout.md` or `8_prepare_app_ux.md`.
+**Action needed**: add as a subtask in `5_screen_layout.md` or `8_prepare_app_ux.md`.  
+**Resolution**: `ResizableDirective` delivered at `src/app/shared/directives/resizable.directive.ts` — inputs `minWidth`, `maxWidth`, `defaultWidth`, `storageKey`; drag-resizes host via `mousedown/mousemove/mouseup`; persists to `localStorage`. Covered by 5 unit tests.
 
-### D7 — `UiStateService` not tracked as a deliverable
+### D7 — `UiStateService` not tracked as a deliverable — [RESOLVED]
 
 **Affects**: `5_screen_layout.md`, `22_chat_ui_logic.md`  
 Shared UI state (active chat/feed/folder ID, right panel tab, sidebar collapse) needs a service, but no issue defines its shape, responsibility boundary, or file path.  
-**Action needed**: add as a subtask once AR2 is resolved.
+**Action needed**: add as a subtask once AR2 is resolved.  
+**Resolution**: `UiStateService` delivered at `src/app/services/ui-state.service.ts` — manages `activeItemType`, `activeItemId`, `leftSidebarOpen`, `rightPanelOpen`, `rightPanelTab` with full API (`selectItem`, `openRightPanel`, `closeRightPanel`, `toggleLeftSidebar`, `setLeftSidebarOpen`). Covered by 10 unit tests.
 
 ### D8 — `KeyboardNavDirective` not tracked as a deliverable
 
@@ -141,11 +150,12 @@ Shared UI state (active chat/feed/folder ID, right panel tab, sidebar collapse) 
 Keyboard navigation within sidebar, timeline, and right panel is specified in `8_prepare_app_ux.md` but no issue defines a directive (or per-component implementation) as a concrete deliverable.  
 **Action needed**: decide directive vs. per-component approach and add subtask.
 
-### D9 — No routing issue exists
+### D9 — No routing issue exists — [RESOLVED]
 
 **Affects**: `9_prepare_app_ui.md`  
 `app.routes.ts` is empty. No issue covers wiring routes for `/chat/:id`, `/feed/:id`, `/folder/:id`, lazy loading strategy, or 404 handling.  
-**Action needed**: create a routing issue or add routing subtasks to `9_prepare_app_ui.md`.
+**Action needed**: create a routing issue or add routing subtasks to `9_prepare_app_ui.md`.  
+**Resolution**: `app.routes.ts` fully wired — `/:type` lazy-loads `ShellComponent`, `/:type/:id` child route handled via `UiStateService.selectItem()`, `/` redirects to `/chat`. No separate routing issue needed; covered by `ADR-006`.
 
 ### D10 — `mock-data.json` completeness not audited
 
@@ -187,11 +197,12 @@ The `[Move]` action in both issues opens a "folder picker" but its visual design
 `[Delete]` in both issues requires a confirmation dialog but its layout, button labels (`[Cancel]` `[Delete]`?), focus trap behavior, and ARIA role are not specified.  
 **Action needed**: add confirmation dialog spec to `9_prepare_app_ui.md` as a reusable component.
 
-### DS5 — Status dot color tokens not defined
+### DS5 — Status dot color tokens not defined — [RESOLVED]
 
 **Affects**: `22_chat_ui_logic.md`  
 "Online green / away yellow / offline gray" are described in prose but no hex tokens are assigned. The color palette in `9_prepare_app_ui.md` does not include status-dot tokens.  
-**Action needed**: add `Status-Online`, `Status-Away`, `Status-Offline` tokens to `9_prepare_app_ui.md` §Colors and `docs/UI_UX_requirements.md` §3.
+**Action needed**: add `Status-Online`, `Status-Away`, `Status-Offline` tokens to `9_prepare_app_ui.md` §Colors and `docs/UI_UX_requirements.md` §3.  
+**Resolution**: `RightPanelComponent` maps status dots to existing palette tokens — online → `--color-terminal-green`, away → `--color-user-yellow`, dnd → `--color-user-red`, offline → `--color-text-muted`. No new tokens needed; existing palette is sufficient.
 
 ### DS6 — Scroll-to + highlight state not visually specified
 
@@ -253,11 +264,11 @@ Must be resolved before any code is written.
 
 | #   | Concern                                                  | Why it blocks                                          |
 | --- | -------------------------------------------------------- | ------------------------------------------------------ |
-| AR1 | `ApiService` method surface defined                      | Every feature issue calls methods that don't exist yet |
-| AR2 | State management decision → `UiStateService` shape       | Layout shell, sidebar, right panel all share state     |
-| AR3 | Routing decision recorded in ADR + routing issue created | `app.routes.ts` is empty; no screen can be wired       |
+| ~~AR1~~ | ~~`ApiService` method surface defined~~ | ✅ [RESOLVED] |
+| ~~AR2~~ | ~~State management decision → `UiStateService` shape~~ | ✅ [RESOLVED] |
+| ~~AR3~~ | ~~Routing decision recorded in ADR + routing issue created~~ | ✅ [RESOLVED] |
 | AR4 | Draft persistence key schema defined                     | Composer and post editor both write to localStorage    |
-| AR5 | Column resize persistence strategy defined               | `resizable` directive needs a storage contract         |
+| ~~AR5~~ | ~~Column resize persistence strategy defined~~ | ✅ [RESOLVED] |
 
 ### Layer 1 — Specs & decompositions (unblocks dev coder)
 
@@ -266,13 +277,13 @@ Analyst and designer work. No implementation until these are written.
 | #    | Concern                                                       | Why it blocks                                       |
 | ---- | ------------------------------------------------------------- | --------------------------------------------------- |
 | A1   | Subtask decompositions for all UI issues                      | Dev coder has no actionable units of work           |
-| A2   | Files tab section in `22_chat_ui_logic.md`                    | Right panel is incomplete without it                |
+| ~~A2~~ | ~~Files tab section in `22_chat_ui_logic.md`~~ | ✅ [RESOLVED] |
 | A3   | Emoji picker spec in `25_message_ui_logic.md`                 | Composer action bar is partially unspecified        |
 | A5   | Post replies section in `10_feed_and_publishing_ui_logic.md`  | Post reader mode is incomplete                      |
 | A6   | Share/forward UI flow in `10_feed_and_publishing_ui_logic.md` | Feed moderation section references it               |
-| A8   | Peer count data source in `5_screen_layout.md`                | App header cannot be implemented                    |
+| ~~A8~~ | ~~Peer count data source in `5_screen_layout.md`~~ | ✅ [RESOLVED] |
 | DS1  | Skeleton shape per component                                  | Every data-driven component needs a loading state   |
-| DS5  | Status dot color tokens (`Status-Online/Away/Offline`)        | Sidebar rows and member list use them               |
+| ~~DS5~~ | ~~Status dot color tokens (`Status-Online/Away/Offline`)~~ | ✅ [RESOLVED] |
 | DS13 | Canonicalize icon/emoji set against §7                        | Inconsistent symbols across sidebar and folder view |
 
 ### Layer 2 — Shared primitives (unblocks all feature components)
@@ -285,9 +296,9 @@ Pipes, directives, and services consumed by 3+ features. Build these before any 
 | D2  | `fileSize` pipe unit/precision spec             | Used in file details, folder view, attachment chips |
 | D3  | `mentionHighlight` pipe parsing rules           | Used in message timeline                            |
 | D4  | `markdown` pipe subset + sanitization           | Used in post reader mode                            |
-| D5  | `clickOutside` directive tracked as deliverable | Used in attachment picker, emoji picker             |
-| D6  | `resizable` directive tracked as deliverable    | Used in 3-column layout shell                       |
-| D7  | `UiStateService` tracked as deliverable         | Used by layout, sidebar, right panel, composer      |
+| ~~D5~~ | ~~`clickOutside` directive tracked as deliverable~~ | ✅ [RESOLVED] |
+| ~~D6~~ | ~~`resizable` directive tracked as deliverable~~ | ✅ [RESOLVED] |
+| ~~D7~~ | ~~`UiStateService` tracked as deliverable~~ | ✅ [RESOLVED] |
 | D8  | `KeyboardNavDirective` approach decided         | Used in sidebar, timeline, right panel              |
 
 ### Layer 3 — Layout shell & routing (unblocks feature placement)
@@ -296,7 +307,7 @@ The 3-column scaffold and routes must exist before features can be placed.
 
 | #   | Concern                                       | Why it blocks                                                        |
 | --- | --------------------------------------------- | -------------------------------------------------------------------- |
-| D9  | Routing issue created + `app.routes.ts` wired | No screen can be navigated to                                        |
+| ~~D9~~ | ~~Routing issue created + `app.routes.ts` wired~~ | ✅ [RESOLVED] |
 | D10 | `mock-data.json` audited and completed        | Components render empty/broken without fixture data                  |
 | A7  | Cross-issue consistency table written         | Shared patterns (sidebar row, right panel contract) diverge silently |
 
@@ -306,7 +317,7 @@ Each track is independent once layers 0–3 are resolved.
 
 | Track                 | Issues       | Key open concerns to resolve first                                                                            |
 | --------------------- | ------------ | ------------------------------------------------------------------------------------------------------------- |
-| **Chat + Messages**   | `#22`, `#25` | A2 (Files tab), A3 (emoji picker), DS6 (highlight state), DS7 (new messages indicator), DS9 (reaction states) |
+| **Chat + Messages**   | `#22`, `#25` | A3 (emoji picker), DS6 (highlight state), DS7 (new messages indicator), DS9 (reaction states) |
 | **Feed + Publishing** | `#10`        | A5 (post replies), A6 (share flow)                                                                            |
 | **Folder + Files**    | `#21`, `#19` | DS3 (folder picker modal), DS10 (breadcrumb decision), DS11 (resize handle)                                   |
 | **Attachment picker** | `#20`        | DS8 (progress bar), DS12 (drag-and-drop zone)                                                                 |

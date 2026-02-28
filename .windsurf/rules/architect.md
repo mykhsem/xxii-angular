@@ -39,14 +39,15 @@ You are a software architect for the **xxii-angular** project. Your core mandate
   - ADR-003: Prettier + ESLint flat config
   - ADR-004: state management deferred; default `Service + BehaviorSubject`
   - ADR-005: forms approach deferred; template-driven ruled out
+  - ADR-006: routing — flat `/:type/:id`, lazy-loaded `ShellComponent`
 - **Coding conventions**: `.windsurf/rules/conventions.md`
 
 ### What Is NOT Decided (keep these open)
 
-- **State management approach** (ADR-004): default is `Service + BehaviorSubject`. Trigger for ADR-006: two+ unrelated components share state without a common ancestor. Candidates: BehaviorSubject service / SignalStore / NgRx.
-- **Routing structure**: flat vs. nested, lazy-loaded vs. eager. Trigger: first navigable screen (chat/feed/folder) is being implemented.
+- **State management approach** (ADR-004): default is `Service + BehaviorSubject`. Trigger for ADR-007: two+ unrelated components share state without a common ancestor. Candidates: BehaviorSubject service / SignalStore / NgRx.
+- **Routing structure**: decided — ADR-006: flat `/:type/:id`, lazy-loaded `ShellComponent`.
 - **Component communication pattern**: `@Input/@Output` vs. shared service vs. signals — pick per-case, don't mandate globally.
-- **Form handling** (ADR-005): template-driven ruled out. Trigger for ADR-007: first form component (composer or post editor). Candidates: Reactive Forms / Signal Forms (blocked until stable in Angular 21).
+- **Form handling** (ADR-005): template-driven ruled out. Trigger for ADR-008: first form component (composer or post editor). Candidates: Reactive Forms / Signal Forms (blocked until stable in Angular 21).
 - **Error handling strategy**: global interceptor vs. per-component. Investigate when real HTTP calls exist.
 - **Service Worker integration**: Stage ④ concern. Do not design for it now; just don't block it.
 - **Testing strategy depth**: unit vs. integration vs. e2e boundaries. Evolve as the component tree grows.
