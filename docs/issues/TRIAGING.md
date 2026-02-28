@@ -6,9 +6,9 @@ Dependency rule: an issue cannot start until all issues it `refs:` are at least 
 
 ---
 
-## Priority 1 — Foundation [DONE]
+## Priority 1 — Foundation [IN PROGRESS]
 
-### #9 `prepare_app_ui` [DONE]
+### #9 `prepare_app_ui` [IN PROGRESS]
 
 **File**: `9_prepare_app_ui.md`  
 **Refs**: `8_prepare_app_ux.md`, `5_screen_layout.md`  
@@ -19,9 +19,41 @@ Dependency rule: an issue cannot start until all issues it `refs:` are at least 
 - [DONE] Global CSS baseline (monospace font, background, scrollbar styles)
 - [DONE] Routing shell (`app.routes.ts`) with `/:type/:id` pattern
 
+**Open items**:
+- [blocked] Skeleton per-context shape variants (sidebar rows, messages, post cards, file rows) — needs `SidebarRow`, `TimelineMessage`, `FeedCard` (Priority 2/3)
+- [blocked] Error banner usage context — emerges when data-fetching feature components exist (Priority 3+)
+- [blocked] Author nick weight `500` — no consumer until `SidebarRow` / `MessageRowComponent` (Priority 2/3)
+- [done] Badge padding/font-size: `4px 8px` / `11px` confirmed in source (`var(--space-1) var(--space-2)`, `var(--font-size-small)`)
+- [blocked] Hover state for row components (`Surface` bg) — requires `SidebarRow` / list row components (Priority 2)
+- [blocked] Active/Pressed state verification — requires interactive row components (Priority 2)
+- [blocked] Skeleton → content swap logic — needs data-fetching content components (Priority 3+)
+- [done] Button Enter/Space: native `<button>` handles keyup for Enter/Space by default — confirmed correct
+- [blocked] All 10 screens (none started) — each requires Priority 3–5 feature components
+- [blocked] Empty state visual (`Text-Muted`, centered) — needs content components to host it (Priority 3+)
+- [blocked] Navigation flow: Sidebar → Center — requires `LeftSidebarComponent` + center content (Priority 3)
+- [blocked] Navigation flow: Center → Right panel — requires center header action buttons (Priority 3)
+- [blocked] Navigation flow: Right panel → Center scroll-to-item with highlight — requires `MessageTimelineComponent` (Priority 3)
+- [blocked] Section gap spacing `16px` — requires `SidebarSection` component (Priority 2)
+- [blocked] Message vertical spacing `4px` / `12px` — requires `MessageRowComponent` (Priority 3)
+- [blocked] Card padding `12px` — requires `FeedCard` component (Priority 5)
+- [blocked] Composer padding — requires `ComposerComponent` (Priority 3)
+- [blocked] `SidebarSection` component — this IS the Priority 2 deliverable
+- [blocked] `SidebarRow` component — Priority 2
+- [blocked] `TimelineMessage` component — Priority 3 (#25)
+- [blocked] `FeedCard` component — Priority 5 (#10)
+- [blocked] `Composer` component — Priority 3 (#25); also blocked on ADR-005 (forms decision)
+- [blocked] `RightPanel` component — Priority 3 (#22)
+- [blocked] `ReactionBadge` component — Priority 2 (shared primitive)
+- [blocked] `AttachmentChip` component — Priority 2 (shared primitive)
+- [blocked] `Select` component — explicitly deferred; no consumer exists yet
+- [blocked] Selected interaction state (`Surface` bg + `2px Terminal-Green` bar) — requires `SidebarRow` (Priority 2)
+- [blocked] Panel collapse/expand animation `150ms` — requires toggle button in shell (Priority 3 #22)
+- [blocked] Right panel open/close animation `150ms` — requires X button + panel rendering (Priority 3 #22)
+- [todo] Modal open/close animation: `100ms` opacity fade — standalone, can be done in `ModalComponent` now
+
 ---
 
-### #8 `prepare_app_ux` [DONE]
+### #8 `prepare_app_ux` [IN PROGRESS]
 
 **File**: `8_prepare_app_ux.md`  
 **Refs**: `9_prepare_app_ui.md`, `5_screen_layout.md`  
@@ -33,9 +65,39 @@ Dependency rule: an issue cannot start until all issues it `refs:` are at least 
 - [DONE] Skip link for screen readers
 - [DONE] Breakpoint service or CSS-only responsive rules
 
+**Open items**:
+- [review] `<768px` breakpoint: sidebar hidden via CSS but no hamburger toggle button; composer not visible — standalone shell fix
+- [done] `ModalComponent` `max-height: 80vh`: confirmed set on `.modal-dialog` in source
+- [blocked] Full Tab/Shift+Tab zone cycle — requires Center header, Composer, Right panel components (Priority 3)
+- [blocked] Within-sidebar keyboard nav (Up/Down, Enter, Escape) — requires `SidebarSection` + `SidebarRow` (Priority 2)
+- [blocked] Within-timeline keyboard nav — requires `MessageTimelineComponent` (Priority 3)
+- [blocked] Within-composer keyboard behavior — requires `ComposerComponent` + ADR-005 decision (Priority 3)
+- [blocked] Within-right-panel keyboard nav — requires `RightPanelComponent` (Priority 3)
+- [todo] Ctrl+K command palette placeholder — standalone, can be added to `HotkeyService` now
+- [blocked] Sidebar item text truncation — requires `SidebarRow` component to style (Priority 2)
+- [blocked] Center header description truncation + tooltip — requires `CenterHeaderComponent` (Priority 3)
+- [blocked] Message content `overflow-wrap: break-word` — requires `MessageRowComponent` (Priority 3)
+- [blocked] Timeline auto-scroll to bottom on new message — requires `MessageTimelineComponent` (Priority 3)
+- [blocked] Timeline scroll pause + "new messages" indicator — requires `MessageTimelineComponent` (Priority 3)
+- [blocked] Feed card `line-clamp: 3` — requires `FeedCard` component (Priority 5)
+- [blocked] No-truncation rule for message/post/thread content — requires message and post reader components (Priority 3/5)
+- [blocked] Code blocks `[copy]` button — requires `markdown` pipe + post reader (Priority 5)
+- [blocked] File checksums `[copy]` action — requires `FileDetailsPanelComponent` (Priority 4)
+- [blocked] Links clickable in messages/posts — requires `MessageRowComponent` + post reader (Priority 3/5)
+- [blocked] Swipe right/left gestures — requires sidebar toggle button + mobile layout complete (Priority 3)
+- [blocked] Long press on message — requires `MessageContextActionsComponent` (Priority 3)
+- [blocked] Pull to refresh — requires timeline components (Priority 3)
+- [blocked] Pinch-to-zoom disabled — needs viewport `user-scalable=no` decision; no spec yet
+- [blocked] Touch targets `44px` minimum — must be applied on interactive row components (Priority 2/3)
+- [blocked] Timeline `role="log"` with `aria-live="polite"` — requires `MessageTimelineComponent` (Priority 3)
+- [blocked] Composer `role="textbox"` with `aria-label` — requires `ComposerComponent` (Priority 3)
+- [blocked] Unread badges `aria-label` — requires `SidebarRow` (Priority 2)
+- [blocked] Status dots `aria-label` — requires `SidebarRow` (Priority 2)
+- [blocked] Sidebar sections `role="group"` with `aria-label` — requires `SidebarSection` (Priority 2)
+
 ---
 
-### #5 `screen_layout` [DONE]
+### #5 `screen_layout` [IN PROGRESS]
 
 **File**: `5_screen_layout.md`  
 **Refs**: `22_chat_ui_logic.md`, `9_prepare_app_ui.md`  
@@ -46,6 +108,27 @@ Dependency rule: an issue cannot start until all issues it `refs:` are at least 
 - [DONE] `UiStateService` — active item ID, right panel tab, sidebar collapse state
 - [DONE] Column resize with min/max constraints and persistence
 - [DONE] Responsive collapse behavior at all 4 breakpoints
+
+**Open items**:
+- [blocked] App header title context-driven — requires active chat/feed/folder data from `ApiService` (Priority 3)
+- [review] Left sidebar toggle button not rendered — `toggleLeftSidebar` exists in `UiStateService`; button can be added to shell now
+- [review] Right panel `X` close button not rendered — `closeRightPanel` exists in `UiStateService`; button can be added to shell now
+- [blocked] Right panel tab state persistence — only meaningful when tabs have real content (Priority 3 #22)
+- [review] Below ~768px: no hamburger toggle button — can be added to shell now
+- [blocked] Left sidebar sections (CONTACTS, FEEDS, CHATS, FOLDERS) — Priority 3 (#22)
+- [blocked] Each section collapsible with chevron — requires `SidebarSection` component (Priority 2)
+- [blocked] Section collapsed state persisted in localStorage — requires `SidebarSection` (Priority 2)
+- [blocked] Center column fixed header (context line + action buttons) — Priority 3 (#22)
+- [blocked] Center column scrollable content area — Priority 3 (#22, #25)
+- [todo] Center column shortcut hint bar (fixed): `Ctrl+F: search | Ctrl+P: pinned | Esc: close` — standalone, can be added to shell now
+- [blocked] Center column fixed footer (composer) — requires `ComposerComponent` (Priority 3 #25)
+- [blocked] Right panel opens on demand from header buttons — requires center header (Priority 3 #22)
+- [blocked] Right panel modes (Thread, Post Details, Pins, Members, Files, Search) — Priority 3 (#22)
+- [blocked] Keyboard focus order across zones — requires all three zone components (Priority 3)
+- [blocked] Tab / Shift+Tab cycle between focus zones — requires zone components (Priority 3)
+- [todo] Ctrl+K command palette placeholder — standalone, can be added to `HotkeyService` now
+- [blocked] Up/Down/Enter item navigation within zones — requires zone components (Priority 3)
+- [blocked] Composer always visible at all breakpoints — requires `ComposerComponent` (Priority 3 #25)
 
 ---
 
